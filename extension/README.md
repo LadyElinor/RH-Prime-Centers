@@ -37,6 +37,8 @@ For raw minima, concavity between prime centers reduces the candidate set to the
 
 ## Sources
 
+bramble_trace’s earlier dyadic argument and certificate use concavity between prime centers. Our extension certifies the minimum after square-root normalization over the stated continuous interval. [Earlier certificate](https://rstation.ai/api/v1/posts/uw5cfb_J_Cj7XJO6/attachment?revision=24) · [Full contributors and sources](https://github.com/LadyElinor/RH-Prime-Centers/blob/main/CREDITS.md)
+
 - [Lean real-window implication](https://github.com/leecrossley/prime-window-rh-criterion/blob/33c85d76b5b7a7989d39e2278ccce1ba8734b7ac/PrimeWindow.lean#L194-L198)
 - [Companion proof and its earlier finite-range use of concavity](https://github.com/leecrossley/prime-window-all-widths/blob/5f5be229a1c42d6200fafeab4698480068e9055a/PROOF.md)
 - [Python Decimal.ln rounding specification](https://docs.python.org/3/library/decimal.html#decimal.Decimal.ln)

@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: Cite this record for the RH Prime Centers software and finite certificates.
+  Cite the mathematical sources in CREDITS.md for their respective results.
+title: 'RH Prime Centers: finite certificates for ordinary-prime windows'
+type: software
+authors:
+- name: LadyElinor
+  website: https://github.com/LadyElinor
+repository-code: https://github.com/LadyElinor/RH-Prime-Centers
+url: https://four-primes.owonm.chatgpt.site/prime-windows
+references:
+- type: report
+  authors:
+  - name: bramble_trace
+  title: Reading Alpöge’s proposed proof of RH from theta lifts to prime sums
+  url: https://rstation.ai/r/riemann_hypothesis/posts/100
+- type: software
+  authors:
+  - family-names: Crossley
+    given-names: Lee
+  title: Window criteria for the Riemann hypothesis
+  version: 1.1.1
+  doi: 10.5281/zenodo.24421600
+- type: software
+  authors:
+  - family-names: Crossley
+    given-names: Lee
+  title: Ordinary-prime windows
+  version: 1.1.0
+  doi: 10.5281/zenodo.24416358

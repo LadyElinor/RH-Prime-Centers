@@ -11,6 +11,10 @@ $$
 
 The unique minimum of $D(y)/\sqrt y$ on this interval occurs at $y=159{,}693.5$ and is approximately $0.37468738359$. The certificate uses $x=4y$, so its full-range row runs from 256 through 459,165,024 and locates this minimum at $x=638{,}774$. The result is unconditional throughout that finite interval.
 
+## Contributors and sources
+
+LadyElinor directed the study. OpenAI Codex and ChatGPT assisted with the code, calculations and writing. In revision 24, bramble_trace gave the every-prime criterion, the concavity reduction and an earlier finite certificate. Lee Crossley suggested the three-scale filter and formalized the real-window implication. Our finite certificate gives the unique minimum of the normalized deficit on the interval above. [bramble_trace, revision 24](https://rstation.ai/api/v1/posts/uw5cfb_J_Cj7XJO6/attachment?revision=24) · [Crossley, v1.1.1](https://doi.org/10.5281/zenodo.24421600) · [Contributors and sources](CREDITS.md) · [Cite this software](CITATION.cff)
+
 ## What the verifier measures
 
 For $y<p<4y$, the sum $P(y)$ weights each ordinary prime by its natural logarithm times $W(p/y)$. The weight rises to one at $p=2y$ and returns to zero at $p=4y$.
@@ -50,4 +54,4 @@ python3 initial/verify.py --check initial/certificate.json
 
 ## Relation to the Riemann hypothesis
 
-The upstream Lean theorem says that RH follows if, for one fixed $\delta>0$, arbitrarily large $X$ satisfy $D(x/4)\ge0$ for every real $x$ in $[X,X^{1+\delta}]$. The first note gives a written deduction showing how a hypothesis at prime centers on arbitrarily late windows suffices. Proving that such windows recur beyond every cutoff is the open step. The computations here establish finite instances. [Formal theorem in Lee Crossley’s repository](https://github.com/leecrossley/prime-window-rh-criterion/blob/33c85d76b5b7a7989d39e2278ccce1ba8734b7ac/PrimeWindow.lean#L194-L198) · [Upstream pole-preservation proof](https://github.com/leecrossley/prime-window-rh-criterion/blob/33c85d76b5b7a7989d39e2278ccce1ba8734b7ac/DelayedPole.lean#L113-L174) · [Companion all-scales argument](https://github.com/leecrossley/prime-window-all-widths/blob/5f5be229a1c42d6200fafeab4698480068e9055a/PROOF.md)
+The upstream Lean theorem says that RH follows if, for one fixed $\delta>0$, arbitrarily large $X$ satisfy $D(x/4)\ge0$ for every real $x$ in $[X,X^{1+\delta}]$. The first note gives a written deduction showing how a hypothesis at prime centers on arbitrarily late windows suffices. A direct proof of recurrence from these prime sums would give another route to RH. Our computations establish finite instances. The [Lean and Mathlib statement](https://leanprover-community.github.io/blog/posts/riemann-hypothesis/) covers the separate proof by Levent Alpöge. [Formal theorem in Lee Crossley’s repository](https://github.com/leecrossley/prime-window-rh-criterion/blob/33c85d76b5b7a7989d39e2278ccce1ba8734b7ac/PrimeWindow.lean#L194-L198) · [Upstream pole-preservation proof](https://github.com/leecrossley/prime-window-rh-criterion/blob/33c85d76b5b7a7989d39e2278ccce1ba8734b7ac/DelayedPole.lean#L113-L174) · [Companion all-scales argument](https://github.com/leecrossley/prime-window-all-widths/blob/5f5be229a1c42d6200fafeab4698480068e9055a/PROOF.md)
