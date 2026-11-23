@@ -60,7 +60,7 @@ The [critical-line budget and certified spectra](notes/critical-line-budget.md) 
 
 The [Lean interval certificate](formal/README.md) proves how the finite grid checks extend to every real position on each of the three spectral test windows. It includes a kernel replay and the exact rational inputs from FLINT.
 
-The [Lean proof of uniform smoothing](formal/README.md#uniform-error-and-the-signed-zero-sum) integrates each signed zero term and proves that a Core 3 pointwise truncation error contributes $o(\sqrt y)$ uniformly for every $y\in[Y,2Y]$. The pointwise formula is a hypothesis of the checked theorem. The remaining sign question concerns the zero sum itself.
+The [Lean proof of uniform smoothing](formal/README.md#uniform-error-and-the-signed-zero-sum) integrates each signed zero term and proves that a Core 3 pointwise truncation error contributes $o(\sqrt y)$ uniformly for every $y\in[Y,2Y]$. The [conductor-one proof](formal/core3/README.md) supplies that hypothesis from Pi’s truncated explicit formula and obtains the uniform result for Mathlib’s Chebyshev prime-power sum. The remaining sign question concerns the zero sum itself.
 
 ## Relation to the Riemann hypothesis
 

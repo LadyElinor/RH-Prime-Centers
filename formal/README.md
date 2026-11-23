@@ -44,11 +44,13 @@ $$\left|Lf(y)-\sum_\rho H(\rho)y^\rho\right|
 
 For fixed $C,S$ and this bound at every $Y\ge2$, the difference divided by $\sqrt y$ tends to zero uniformly across the doubling. The finite family can change with $Y$. Lean checks this statement with the quantifiers in that order in `finite_formula_vanishing`.
 
-The intended arithmetic input is $f(u)=\psi(u)-u$. Pi’s upstream Core 3 theorem supplies a pointwise bound with multiplicities as analytic orders and a strict height cutoff. Connecting that exact declaration to this module still requires a conductor-one adapter. The contribution of the omitted prime powers, including the positive prime-square term, enters separately when passing to ordinary primes. The signed lower bound for arbitrarily late doublings remains open by this route. [Pi’s staged Core 3 theorem in Levent Alpöge’s project](https://github.com/Osgood001/riemann-hypothesis/blob/25bc57f3919f3578d396b71f8bc2cf9b3675ac63/community/core3-attempt-97759/Solution.lean) · [Derivation, contributors and sources](../notes/core3-window-roadmap.md) · [Remaining signed estimate](../notes/critical-line-budget.md)
+The intended arithmetic input is $f(u)=\psi(u)-u$. Pi’s upstream Core 3 theorem supplies a pointwise bound with multiplicities as analytic orders and a strict height cutoff. The [conductor-one proof and reproduction instructions](core3/README.md) connect that exact declaration to Mathlib’s Chebyshev function and discharge the pointwise hypothesis. The contribution of the omitted prime powers, including the positive prime-square term, enters separately when passing to ordinary primes. The signed lower bound for arbitrarily late doublings remains open by this route. [Pi’s staged Core 3 theorem in Levent Alpöge’s project](https://github.com/Osgood001/riemann-hypothesis/blob/25bc57f3919f3578d396b71f8bc2cf9b3675ac63/community/core3-attempt-97759/Solution.lean) · [Derivation, contributors and sources](../notes/core3-window-roadmap.md) · [Remaining signed estimate](../notes/critical-line-budget.md)
 
 The transfer replay accepted 43 local declarations. The six theorems selected for axiom reporting used only `propext`, `Classical.choice`, and `Quot.sound`. Lean rejected two deliberately altered proofs. One reduced the bound from $2M$ to $M$. The other reversed the sign of the spectral coefficient. Mathlib provides the complex-power antiderivative and the logarithmic limit. [Pinned integral theorem](https://github.com/leanprover-community/mathlib4/blob/f897ebcf72cd16f89ab4577d0c826cd14afaafc7/Mathlib/Analysis/SpecialFunctions/Integrals/Basic.lean#L111-L126) · [Pinned growth estimate](https://github.com/leanprover-community/mathlib4/blob/f897ebcf72cd16f89ab4577d0c826cd14afaafc7/Mathlib/Analysis/SpecialFunctions/Pow/Asymptotics.lean#L330-L341)
 
 ## Reproduce
+
+For the proof that applies Pi’s theorem to Mathlib’s Chebyshev function, use the [Lean 4.34.1 reproduction instructions](core3/README.md#reproduce-the-check).
 
 With Elan available, run the following from this directory. The toolchain file selects Lean 4.24.0. Lake pins Mathlib to commit `f897ebcf72cd16f89ab4577d0c826cd14afaafc7`. These standalone modules can be checked without building an RH library.
 
@@ -60,6 +62,14 @@ lake env lean -o .lake/build/WindowCertificate.olean WindowCertificate.lean
 lake env lean --run Replay.lean .lake/build/WindowCertificate.olean
 lake env lean -o .lake/build/TentTransfer.olean TentTransfer.lean
 lake env lean --run Replay.lean tent .lake/build/TentTransfer.olean
+```
+
+To check the conductor-one adapter on this toolchain, run
+
+```sh
+lake exe cache get Mathlib.NumberTheory.LSeries.DirichletContinuation Mathlib.NumberTheory.LSeries.Dirichlet Mathlib.Analysis.Analytic.Order
+lake build Core3Adapter
+lake env lean --run Replay.lean core3 .lake/build/lib/lean/Core3Adapter.olean
 ```
 
 To reproduce the external numerical premises, use Python with `python-flint==0.9.0` and run `python ../notes/certify_core3_spectrum.py --lean-inputs`. The FLINT and Lean checks were both run for this release. We used local source directories for the pinned dependencies and Mathlib's compiled cache when running the Lake commands.

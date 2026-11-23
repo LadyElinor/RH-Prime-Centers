@@ -1,6 +1,6 @@
 name = "prime_window_certificate"
 version = "0.1.0"
-defaultTargets = ["WindowCertificate", "TentTransfer"]
+defaultTargets = ["WindowCertificate", "TentTransfer", "Core3Adapter"]
 
 [[require]]
 name = "mathlib"
@@ -12,3 +12,6 @@ name = "WindowCertificate"
 
 [[lean_lib]]
 name = "TentTransfer"
+
+[[lean_lib]]
+name = "Core3Adapter"
