@@ -43,6 +43,8 @@ $$
 
 Since $V(k,j)$ is nondecreasing in $j$, every prefix of a passing block also passes. Given any valid partition, one can extend the first block to its greedy endpoint, discard the boundaries it crosses, and retain a passing suffix of the block containing that endpoint. This never increases the count. Repeating gives the greedy partition. The reported block counts are minimal among partitions with boundaries on this checkpoint grid and this strict block rule.
 
+The [public checkpoint table](https://four-primes.owonm.chatgpt.site/prime-windows.html#checkpoint-loss) shows how the downward total changes as the right endpoint moves from twice to 54 times the starting scale. It includes the first exhausted margin and links to this certificate.
+
 ## Reproduce the certificate
 
 From the repository root run
