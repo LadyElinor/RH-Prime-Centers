@@ -84,6 +84,8 @@ with a uniform error and a fixed cutoff $Y$ on the doubling. Thus, for any fixed
 
 For longer windows one can also specialize the estimate at $Y=y$. The cutoff then moves with the position. For fixed $\delta,\eta>0$, suppose arbitrarily large $X$ satisfy $\Re S_y(y)/\sqrt y\ge -c+\eta$ at every $y=x/4$ with $X\le x\le X^{1+\delta}$. Lean proves that arbitrarily late such intervals have $D(x/4)>0$ throughout. This is a sufficient condition for the sign hypothesis in Lee Crossley’s ordinary-prime criterion. Establishing the recurring spectral bound independently of RH is the open step in this argument. [Constant-bias formula, real-part bounds and power-window implication](BiasFormula.lean) · [Crossley’s stated criterion](https://github.com/leecrossley/prime-window-rh-criterion/blob/33c85d76b5b7a7989d39e2278ccce1ba8734b7ac/PrimeWindow.lean#L194-L198)
 
+The same moving sum gives a test at squares. Put $y=k^2/4$. The prime-power deficit at $x=k^2$ differs from $\Re S_y(y)$ by $O(\log^2 k)$. Crossley’s square-block criterion therefore makes RH equivalent to the existence of one $C>0$ such that $\Re S_y(y)\ge -Ck$ for every integer $K\le k\le K^2$ on arbitrarily late blocks. [The Crossley Criteria, Theorem 4.1](https://doi.org/10.5281/zenodo.24466908).
+
 ## Reproduce the check
 
 From this directory, with Elan, Git, Python 3, and network access, run
