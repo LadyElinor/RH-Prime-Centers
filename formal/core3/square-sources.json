@@ -1,0 +1,29 @@
+[
+  {
+    "repository": "hanwenzhu/LeanArchitect",
+    "commit": "468e8f58fb4ad6e6ad672a08da6d0d0531e95a97",
+    "files": {
+      "Architect/Basic.lean": "92ed89acca564cdfb0cb696a3c2e3b62a7ccca82cb6fca85d0f994ffd2b2cb60",
+      "Architect/Command.lean": "8497d574c12414908829e8b25a96e0ce52c643bd48da66b678d1623db395696a",
+      "Architect/Content.lean": "73de49bb499fc140dce470251e3f657368b788dca1659317e902f476ebb9556b",
+      "Architect/Attribute.lean": "1bce2337ed4de0e6e735819e89b4d35ad81c7e996e6cade79e8a9ef781dba314",
+      "Architect/CollectUsed.lean": "921633f79fef58cf0d8540477785c4d9213608642685c21733dd3c61855d154d",
+      "Architect/Tactic.lean": "cd152524b774c063cb382171e00c3b7913c5757063f560b10f9009e79f37f08d",
+      "Architect/Output.lean": "ef52349573a02ff0714638fb47dfaf335c8c8a8c8b98192d3fc4d190ef4923d3",
+      "Architect/Load.lean": "6ae5e51b0f041d4cba8da31e0d8ff96ffa8ae89bf6dc33d84d7c0349dc92bd34",
+      "Architect.lean": "68748939e82259728644095b343599593f38abe65c971c14f910445a44f4ecf6"
+    }
+  },
+  {
+    "repository": "AlexKontorovich/PrimeNumberTheoremAnd",
+    "commit": "c39a751132c88b6e8080b74c74023fd95b3d8be0",
+    "files": {
+      "PrimeNumberTheoremAnd/Mathlib/Analysis/Asymptotics/Asymptotics.lean": "c1cdb6bb509c6178bf17868c57e5b53721b87fb2774ef8562bc5945ffe5b11ae",
+      "PrimeNumberTheoremAnd/Sobolev.lean": "fe06e13fad5b47dbd324307ba246110515c4cb50f4c41d6cb15764fd53b1b8ef",
+      "PrimeNumberTheoremAnd/Fourier.lean": "44d2c28b251be0296f897e43a75a055f346a6199849b54ab204240fe4099e6c2",
+      "PrimeNumberTheoremAnd/Mathlib/Algebra/Notation/Support.lean": "e688bf925c2130b291c536d3b93b72c20e41ae95d530c90915921d75a6f52504",
+      "PrimeNumberTheoremAnd/SmoothExistence.lean": "e689045a2d7f92c71c68fda6aa69a89d4a8692187475ba432ed010f453110ea0",
+      "PrimeNumberTheoremAnd/Wiener.lean": "7bd40c9cffedc1d9a0f675ea971c6719e490b1b106807459d549145f30d70f05"
+    }
+  }
+]

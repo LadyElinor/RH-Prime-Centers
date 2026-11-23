@@ -47,6 +47,43 @@ $$
 
 Here $Q_2(y)$ is the **actual finite prime-square sum** at the sliding scale $y$. The finite-height envelope above carries over exactly when both $Q_2$ and $Q_{\ge3}$ are retained. With only $Q_2$ retained, the higher-power error is absorbed in the uniform limit. [Ordinary-prime residual, finite bound and uniform limits](OrdinaryFormula.lean)
 
+## Why the limit is 6√2 − 8
+
+Let $r=\sqrt y$. A prime square enters at $p^2/y=(p/r)^2$. In the variable $t=p/r$ the tent is supported on $[1,2]$ with its peak at $\sqrt2$. The ordinary prime number theorem in the form $\vartheta(x)/x\to1$ says that the weighted cumulative mass $\vartheta(rt)/r$ tends to $t$, uniformly for $1\le t\le2$. Indeed the error is at most $2\sup_{u\ge r}|\vartheta(u)/u-1|$. Integration by parts against the continuous, piecewise differentiable tent therefore gives
+
+$$
+\lim_{y\to\infty}\frac{Q_2(y)}{\sqrt y}
+=\int_1^{\sqrt2}2(1-t^{-2})\,dt+\int_{\sqrt2}^2(4t^{-2}-1)\,dt
+=(3\sqrt2-4)+(3\sqrt2-4)=6\sqrt2-8.
+$$
+
+bramble_trace’s dyadic work and Lee Crossley’s all-widths work explain the prime-square bias. This formalization computes the coefficient through the signed integral. [Earlier dyadic work](https://rstation.ai/r/riemann_hypothesis/posts/100) · [Crossley’s companion derivation](https://github.com/leecrossley/prime-window-all-widths/blob/5f5be229a1c42d6200fafeab4698480068e9055a/PROOF.md)
+
+The earlier Abel identity gives $Q_2=-L(F)$ with $F(u)=\vartheta(\sqrt u)$ for $u>0$. Applying the operator to $\sqrt u$ gives $-L(\sqrt{\cdot})(y)=(6\sqrt2-8)\sqrt y$ exactly. The prime number theorem gives $F(u)-\sqrt u=o(\sqrt u)$. On $[y,8y]$ the input error is uniformly $o(\sqrt y)$, so the tent bound transfers the limit to the discrete sum. The same tolerance then holds simultaneously at all positions of every sufficiently late doubling. [Square-root integral and error transfer](SquareKernel.lean) · [Prime number theorem and square limit](SquareBias.lean)
+
+The arithmetic input is the Prime Number Theorem and project's `WeakPNT`. It sums the von Mangoldt function over $n<N$. Taking $N=\lfloor x\rfloor+1$ counts all integers $n\le x$, including a possible jump at $x$. Then $N/x\to1$ gives $\psi(x)/x\to1$, and $0\le\psi(x)-\vartheta(x)=O(\sqrt x)$ gives the corresponding limit for ordinary primes. Upstream uses Wiener–Ikehara and nonvanishing on the line $\Re s=1$. Michael Stoll contributed the prime-number-theorem argument adapted in the upstream file. The pinned module also contains two admitted preliminary Fourier decay lemmas. The axiom reports for `WeakPNT` and each downstream result list only `propext`, `Classical.choice`, and `Quot.sound`. [Pinned upstream proof](https://github.com/AlexKontorovich/PrimeNumberTheoremAnd/blob/c39a751132c88b6e8080b74c74023fd95b3d8be0/PrimeNumberTheoremAnd/Wiener.lean#L2438-L2465) · [Project contributors](https://github.com/AlexKontorovich/PrimeNumberTheoremAnd/graphs/contributors) · [LeanArchitect, used for the upstream blueprint](https://github.com/hanwenzhu/LeanArchitect/tree/468e8f58fb4ad6e6ad672a08da6d0d0531e95a97)
+
+Direct evaluation of the finite sum over primes gives the following values. Each row uses the original tent on $p^2$ and ordinary floating-point logarithms. The rows illustrate the size of the correction at three scales. [Reproduce the numerical examples](check_square_bias.py)
+
+| $y$ | $Q_2(y)/\sqrt y$ | Difference from $6\sqrt2-8$ |
+|---:|---:|---:|
+| $10^4$ | 0.435660036 | −0.049621338 |
+| $10^8$ | 0.482805749 | −0.002475625 |
+| $10^{12}$ | 0.485072593 | −0.000208782 |
+
+## The sign question after normalization
+
+Write $c=6\sqrt2-8\approx0.485281374$. The combined Lean theorem gives
+
+$$
+\frac{D(y)}{\sqrt y} = c+\frac{\Re S_Y(y)}{\sqrt y}+o(1)
+\qquad(Y\le y\le 2Y),
+$$
+
+with a uniform error and a fixed cutoff $Y$ on the doubling. Thus, for any fixed $\eta>0$, a lower bound $\Re S_Y(y)/\sqrt y\ge -c+\eta$ at every position of a sufficiently late doubling implies $D(y)/\sqrt y>\eta/2$ throughout it.
+
+For longer windows one can also specialize the estimate at $Y=y$. The cutoff then moves with the position. For fixed $\delta,\eta>0$, suppose arbitrarily large $X$ satisfy $\Re S_y(y)/\sqrt y\ge -c+\eta$ at every $y=x/4$ with $X\le x\le X^{1+\delta}$. Lean proves that arbitrarily late such intervals have $D(x/4)>0$ throughout. This is a sufficient condition for the sign hypothesis in Lee Crossley’s ordinary-prime criterion. Establishing the recurring spectral bound independently of RH is the open step in this argument. [Constant-bias formula, real-part bounds and power-window implication](BiasFormula.lean) · [Crossley’s stated criterion](https://github.com/leecrossley/prime-window-rh-criterion/blob/33c85d76b5b7a7989d39e2278ccce1ba8734b7ac/PrimeWindow.lean#L194-L198)
+
 ## Reproduce the check
 
 From this directory, with Elan, Git, Python 3, and network access, run
@@ -54,18 +91,18 @@ From this directory, with Elan, Git, Python 3, and network access, run
 ```sh
 lake update
 lake exe cache get
-lake env python3 verify.py
+lake env python3 verify.py --square-bias
 ```
 
 The [verifier](verify.py) fetches Pi’s source at commit `25bc57f3919f3578d396b71f8bc2cf9b3675ac63` and checks SHA-256 `28fab02c68c3a5a4d596e72f68caa532d14ddf8c70a5a2abfe5c4e821bf76e68`. An existing download can be supplied with `--source /path/to/Solution.lean`. It compiles that source unchanged together with the downstream modules on Lean 4.34.1 with Mathlib at `d13f23b723b8a846827a245b89c10fc7d3f11612`. Running from this directory selects that toolchain. The parent project also checks the adapter as an implication on Lean 4.24.0.
 
-The verifier checks the axiom reports for Pi’s theorem and the selected downstream theorems, then replays the seven modules separately against their imported dependencies with Lean’s native `leanchecker`. The reports list `propext`, `Classical.choice`, and `Quot.sound`. The check uses Mathlib’s prebuilt dependencies. Two changes to a temporary copy of the adapter test the correspondence. Lean rejected including zeros exactly at the cutoff and assigning each zero a single copy regardless of analytic order.
+With `--square-bias` the verifier downloads 15 pinned PNT and LeanArchitect source modules, checks each SHA-256, compiles 25 modules, checks 24 named axiom reports and replays all compiled modules with Lean’s native `leanchecker`. Imported Mathlib dependencies come from its build cache. The original seven-module check remains available as `lake env python3 verify.py`. For an offline source check, supply Pi’s file with `--source` and a directory containing the two upstream module trees with `--square-sources`. [Source revisions, build order and hashes](square-sources.json) Two changes to a temporary copy of the adapter test the correspondence. Lean rejected including zeros exactly at the cutoff and assigning each zero a single copy regardless of analytic order.
 
 Run `python3 check_discrete.py` for an independent arithmetic check. It integrates the step function exactly on each piece and compares rational coefficients of each $\log p$ against the direct tent sum, at the 257 scales $y=i/4$ for $1\le i\le257$. [Finite check](check_discrete.py)
 
 ## The next mathematical question
 
-The next formal step is to replace $Q_2(y)$ by $(6\sqrt2-8)\sqrt y+o(\sqrt y)$ using the prime number theorem. The written square-bias derivation is linked below. The separate sign question asks for a lower bound on the retained zero sum across arbitrarily late whole intervals. [Ordinary-prime derivation](../../notes/core3-window-roadmap.md) · [The remaining sign estimate](../../notes/critical-line-budget.md)
+The square-bias limit is now checked. Obtaining the lower bound on the signed zero sum across arbitrarily late intervals remains the next analytic target. [Ordinary-prime derivation](../../notes/core3-window-roadmap.md) · [The remaining sign estimate](../../notes/critical-line-budget.md)
 
 Pi authored the standalone Core 3 proof. Osgood001 staged the cited source in the project based on Levent Alpöge’s formalization. LadyElinor directed this investigation, with OpenAI Codex and ChatGPT assisting on the downstream work. The earlier dyadic setup is due to bramble_trace and the three-scale criterion to Lee Crossley. Lean and Mathlib supply the kernel and mathematical library. Mathlib credits Alastair Irving, Terry Tao and Ruben Van de Velde for the Chebyshev module. [Pi’s source](https://github.com/Osgood001/riemann-hypothesis/blob/25bc57f3919f3578d396b71f8bc2cf9b3675ac63/community/core3-attempt-97759/Solution.lean) · [Staging and verification history](https://github.com/Osgood001/riemann-hypothesis/pull/4) · [Mathlib’s Chebyshev functions](https://github.com/leanprover-community/mathlib4/blob/d13f23b723b8a846827a245b89c10fc7d3f11612/Mathlib/NumberTheory/Chebyshev.lean#L73-L85) · [Project credits](../../CREDITS.md)
 
