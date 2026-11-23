@@ -4,10 +4,15 @@ open Lean
 
 /-- Replay the local proof declarations against their imported dependencies. -/
 def main (args : List String) : IO Unit := do
-  let [path] := args | throw (IO.userError "Expected a compiled WindowCertificate.olean path")
+  let (path, targets) ← match args with
+    | [path] => pure (path, [`PrimeWindowCertificate.doubling_floor, `PrimeWindowCertificate.recorded_floors])
+    | ["tent", path] => pure (path, [`PrimeWindowTransfer.tent_uniform, `PrimeWindowTransfer.tent_sharp,
+        `PrimeWindowTransfer.tent_model, `PrimeWindowTransfer.finite_formula_transfer,
+        `PrimeWindowTransfer.core3_uniform_vanishing, `PrimeWindowTransfer.finite_formula_vanishing])
+    | _ => throw (IO.userError "Usage: Replay.lean [tent] MODULE.olean")
   initSearchPath (← findSysroot)
   let (data, _) ← readModuleData path
-  for target in [`PrimeWindowCertificate.doubling_floor, `PrimeWindowCertificate.recorded_floors] do
+  for target in targets do
     unless data.constNames.contains target do
       throw (IO.userError s!"Missing target {target}")
   let mut localDecls : Std.HashMap Name ConstantInfo := {}

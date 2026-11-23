@@ -7,7 +7,7 @@ $D(y)=2y\log 2-P(y)$, the target is an arbitrarily large $Y$ with $D(y)\ge0$ for
 
 Pi’s staged submission 97759 ends with the theorem `AlpogeRHCore3.explicitFormula` and supplies the witness $C=10102292$. For primitive Dirichlet characters of conductor $N$ and $2\le T\le u$, it bounds the difference between a prime-power sum, its main term, and a sum over zeros counted with multiplicity. It explicitly includes a low-zero term and uses the strict cutoff $|\Im\rho|<T$. The project reports Lean and Comparator verification of the standalone submission. The draft reports 21,025 normalized tokens against 129,270 and lists a separate port and rebuild as pending. We inspected the pinned declaration and did not independently replay Lean. [Pi’s pinned declaration, staged by Osgood001](https://github.com/Osgood001/riemann-hypothesis/blob/25bc57f3919f3578d396b71f8bc2cf9b3675ac63/community/core3-attempt-97759/Solution.lean) · [Draft PR and verification report](https://github.com/Osgood001/riemann-hypothesis/pull/4)
 
-## 2. Carry the error through one doubling — written derivation
+## 2. Carry the error through one doubling
 
 Specialize to the trivial character of conductor one. Write $\psi(u)=\sum_{n\le u}\Lambda(n)$. For $Y\ge2$, fix **one cutoff** $T=Y$ for the entire interval. Throughout $Y\le u\le8Y$, the theorem gives
 
@@ -16,6 +16,8 @@ $$\psi(u)-u=-\sum_{|\Im\rho|<Y}\frac{u^\rho}{\rho}+O(\log^2(2Y)).$$
 The conductor-one low-zero term is a fixed finite constant. In the main error term $u/T\le8$, and $\log(uT)\le\log(8Y^2)$. All zero sums here include both signs and multiplicity.
 
 Define $G_f(y)=y\int_y^{2y}(f(t)-t)t^{-2}\,dt$. For $f=\psi$, twice the difference $G_f(y)-G_f(2y)$ is the deficit with all prime powers included. This follows by integrating each point mass over the same tent as in the ordinary-prime identity. If the error in $f(t)-t$ is bounded by $M$, the error in each $G_f$ is at most $M/2$ and the error in twice their difference is at most $2M$. The range up to $8Y$ covers every needed argument when $Y\le y\le2Y$.
+
+The [Lean transfer theorem and replay](../formal/README.md#uniform-error-and-the-signed-zero-sum) now verify the sharp factor 2, the signed coefficient for finite families with repeated zeros, and the uniform limit for changing cutoffs. The pointwise arithmetic bound is an explicit premise.
 
 Integrating a term $-t^\rho/\rho$ gives $-y^\rho(2^{\rho-1}-1)/(\rho(\rho-1))$ in $G_f(y)$. Subtract the value at $2y$ and double. The coefficient in the deficit is
 
@@ -59,11 +61,11 @@ The last column uses a different calculation. For $x=4y$ the deficit is affine b
 
 **Follow-up completed.** The [critical-line budget and interval certificate](critical-line-budget.md) certifies the finite spectra, improves the available margin to at least 0.211697, and derives the fixed-ratio conclusions when a rightmost real part is attained.
 
-The [Lean certificate and replay](../formal/README.md) now check the curvature-based grid-to-interval step for the three finite spectra, conditional on the numerical inputs certified by FLINT. The analytic specialization of Core 3 remains a separate formalization milestone.
+The [Lean certificate and replay](../formal/README.md) now check the curvature-based grid-to-interval step for the three finite spectra, conditional on the numerical inputs certified by FLINT. The new transfer proof accepts the pointwise explicit formula and proves the smoothed formula on the entire doubling. The conductor-one specialization of the upstream declaration remains to be connected.
 
 1. **Continuum test for a proposed spectral bound.** The script implements a grid-to-interval estimate for the finite normalized spectrum. In $v=\log(y/Y)$, the derivative has absolute value at most the sum of $|H(\rho)(\rho-1/2)|\max(Y^{\Re\rho-1/2},(2Y)^{\Re\rho-1/2})$. Subtract this times half the grid spacing from the sampled minimum. A certified *spectral* computation would additionally need verified zero enclosures, completeness up to the cutoff, and outward arithmetic. The raw-deficit certificates above bypass those dependencies.
 2. **Analytic bottleneck.** Seek a uniform lower bound for $R_Y$ along an unbounded sequence without importing RH. A result about its value at a single starting point or its average over the interval is insufficient. An alternative is to exploit cancellation jointly with the critical-line part and improve the sufficient condition. The numerical diagnostics do not settle either route.
-3. **Formalization order.** First port the conductor-one specialization and the finite tent integral as separate lemmas with matching endpoints and multiplicities. Then formalize the square bias, the uniform remainder and the positive-part zero budget above. Require a pinned Lean build and a statement comparison before describing this bridge as machine checked.
+3. **Formalization order.** The finite tent integral and uniform truncation remainder are checked. Next match the conductor-one character, strict cutoff, analytic-order multiplicities, and prime-power sum to the transfer theorem. The square bias and critical-line budget also need formal proofs. Require a pinned Lean build and a statement comparison before describing this bridge as machine checked.
 4. **Power windows.** A full doubling is an intermediate target. Crossley’s RH implication requires a fixed $\delta>0$ and arbitrarily late $[X,X^{1+\delta}]$, spanning $\delta\log_2 X$ doublings. Passing the one-doubling test alone cannot supply the extra quantifiers. [Crossley’s Lean theorem](https://github.com/leecrossley/prime-window-rh-criterion/blob/33c85d76b5b7a7989d39e2278ccce1ba8734b7ac/PrimeWindow.lean#L194-L198)
 
 LadyElinor directed the prime-window investigation. OpenAI assisted with this roadmap, derivation and diagnostic. Credit for the standalone Core 3 submission belongs to Pi; the underlying RH library is Levent Alpöge’s. [Project contributors](../CREDITS.md)

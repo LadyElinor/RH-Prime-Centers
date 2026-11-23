@@ -1,4 +1,4 @@
-# A Lean certificate for the interval between samples
+# Lean proofs for the ordinary-prime tent
 
 A low point between two sampled positions matters when the inequality must hold at every real position. This module proves the step used by the [finite spectral checker](../notes/certify_core3_spectrum.py) to cover those gaps.
 
@@ -24,17 +24,42 @@ Here $c_j=H(1/2+ig_j)$ for the positive ordinates below the cutoff. Lean proves 
 
 For a negative control we raised the first claimed floor by one millionth, keeping its inputs fixed. Lean rejected the resulting arithmetic obligation. A stronger certificate would need tighter inputs or a sharper estimate for this particular spectrum.
 
+## Uniform error and the signed zero sum
+
+Each position $y$ in a doubling uses the two intervals $[y,2y]$ and $[2y,4y]$. As $y$ ranges from $Y$ to $2Y$, their union lies in $[Y,8Y]$. The [tent transfer module](TentTransfer.lean) keeps one truncation height $T=Y$ for that whole input interval. Write
+
+$$A f(y)=y\int_y^{2y}\frac{f(t)}{t^2}\,dt,\qquad Lf(y)=2\big(Af(y)-Af(2y)\big).$$
+
+If $\lVert e(u)\rVert\le M$ on $[Y,8Y]$ then $\lVert Le(y)\rVert\le2M$ at every real $y\in[Y,2Y]$. Each average has positive kernel mass $1/2$. To attain the factor 2 at any chosen $y>0$, take a real error equal to $+1$ up to $2y$ and $-1$ thereafter. Its averages at $y$ and $2y$ are $+1/2$ and $-1/2$, giving $Le(y)=2$.
+
+For a finite family of complex numbers $\rho\ne0,1$, give each occurrence its own index, including repeated values. The module integrates each signed term $-u^\rho/\rho$ exactly. Its contribution to $L$ is $H(\rho)y^\rho$, where
+
+$$H(\rho)=\frac{(2^\rho-1)(2^\rho-2)}{\rho(\rho-1)}.$$
+
+Let $f$ be the input to $L$, with integrable weighted inputs on the dyadic intervals. Suppose the error between $f(u)$ and the finite sum of $-u^\rho/\rho$ is at most $C\big(u\log^2(uY)/Y+\log u+S\big)$ for $Y\le u\le8Y$, with $Y\ge2$ and $C\ge0$. Then
+
+$$\left|Lf(y)-\sum_\rho H(\rho)y^\rho\right|
+\le 2C\big(8\log^2(8Y^2)+\log(8Y)+S\big)
+\qquad(Y\le y\le2Y).$$
+
+For fixed $C,S$ and this bound at every $Y\ge2$, the difference divided by $\sqrt y$ tends to zero uniformly across the doubling. The finite family can change with $Y$. Lean checks this statement with the quantifiers in that order in `finite_formula_vanishing`.
+
+The intended arithmetic input is $f(u)=\psi(u)-u$. Pi’s upstream Core 3 theorem supplies a pointwise bound with multiplicities as analytic orders and a strict height cutoff. Connecting that exact declaration to this module still requires a conductor-one adapter. The contribution of the omitted prime powers, including the positive prime-square term, enters separately when passing to ordinary primes. The signed lower bound for arbitrarily late doublings remains open by this route. [Pi’s staged Core 3 theorem in Levent Alpöge’s project](https://github.com/Osgood001/riemann-hypothesis/blob/25bc57f3919f3578d396b71f8bc2cf9b3675ac63/community/core3-attempt-97759/Solution.lean) · [Derivation, contributors and sources](../notes/core3-window-roadmap.md) · [Remaining signed estimate](../notes/critical-line-budget.md)
+
+The transfer replay accepted 43 local declarations. The six theorems selected for axiom reporting used only `propext`, `Classical.choice`, and `Quot.sound`. Lean rejected two deliberately altered proofs. One reduced the bound from $2M$ to $M$. The other reversed the sign of the spectral coefficient. Mathlib provides the complex-power antiderivative and the logarithmic limit. [Pinned integral theorem](https://github.com/leanprover-community/mathlib4/blob/f897ebcf72cd16f89ab4577d0c826cd14afaafc7/Mathlib/Analysis/SpecialFunctions/Integrals/Basic.lean#L111-L126) · [Pinned growth estimate](https://github.com/leanprover-community/mathlib4/blob/f897ebcf72cd16f89ab4577d0c826cd14afaafc7/Mathlib/Analysis/SpecialFunctions/Pow/Asymptotics.lean#L330-L341)
+
 ## Reproduce
 
-With Elan available, run the following from this directory. The toolchain file selects Lean 4.24.0. Lake pins Mathlib to commit `f897ebcf72cd16f89ab4577d0c826cd14afaafc7`. This standalone module can be checked without building an RH library.
+With Elan available, run the following from this directory. The toolchain file selects Lean 4.24.0. Lake pins Mathlib to commit `f897ebcf72cd16f89ab4577d0c826cd14afaafc7`. These standalone modules can be checked without building an RH library.
 
 ```sh
 lake exe cache get Mathlib.Analysis.Convex.Deriv Mathlib.Analysis.SpecialFunctions.Complex.Arg Mathlib.Analysis.Complex.ExponentialBounds Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv Mathlib.Tactic.Linarith Mathlib.Tactic.Ring Mathlib.Tactic.FieldSimp
+lake exe cache get Mathlib.Analysis.SpecialFunctions.Integrals.Basic Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 mkdir -p .lake/build
 lake env lean -o .lake/build/WindowCertificate.olean WindowCertificate.lean
 lake env lean --run Replay.lean .lake/build/WindowCertificate.olean
+lake env lean -o .lake/build/TentTransfer.olean TentTransfer.lean
+lake env lean --run Replay.lean tent .lake/build/TentTransfer.olean
 ```
 
 To reproduce the external numerical premises, use Python with `python-flint==0.9.0` and run `python ../notes/certify_core3_spectrum.py --lean-inputs`. The FLINT and Lean checks were both run for this release. We used local source directories for the pinned dependencies and Mathlib's compiled cache when running the Lake commands.
-
-The output concerns a truncated sum over known zeros on three specified doublings. The signed estimate for arbitrarily late doublings, the prime-square asymptotic, and the passage from Core 3 to the uniform smoothed remainder remain separate mathematical statements. [Current analytic bounds and source credits](../notes/critical-line-budget.md) · [Pinned Mathlib concavity theorem](https://github.com/leanprover-community/mathlib4/blob/f897ebcf72cd16f89ab4577d0c826cd14afaafc7/Mathlib/Analysis/Convex/Deriv.lean#L246-L258) · [FLINT zero isolation](https://flintlib.org/doc/acb_dirichlet/index.html)

@@ -60,6 +60,8 @@ The [critical-line budget and certified spectra](notes/critical-line-budget.md) 
 
 The [Lean interval certificate](formal/README.md) proves how the finite grid checks extend to every real position on each of the three spectral test windows. It includes a kernel replay and the exact rational inputs from FLINT.
 
+The [Lean proof of uniform smoothing](formal/README.md#uniform-error-and-the-signed-zero-sum) integrates each signed zero term and proves that a Core 3 pointwise truncation error contributes $o(\sqrt y)$ uniformly for every $y\in[Y,2Y]$. The pointwise formula is a hypothesis of the checked theorem. The remaining sign question concerns the zero sum itself.
+
 ## Relation to the Riemann hypothesis
 
 The upstream Lean theorem says that RH follows if, for one fixed $\delta>0$, arbitrarily large $X$ satisfy $D(x/4)\ge0$ for every real $x$ in $[X,X^{1+\delta}]$. The first note gives a written deduction showing how a hypothesis at prime centers on arbitrarily late windows suffices. A direct proof of recurrence from these prime sums would give another route to RH. Our computations establish finite instances. The [Lean and Mathlib statement](https://leanprover-community.github.io/blog/posts/riemann-hypothesis/) covers the separate proof by Levent Alpöge. [Formal theorem in Lee Crossley’s repository](https://github.com/leecrossley/prime-window-rh-criterion/blob/33c85d76b5b7a7989d39e2278ccce1ba8734b7ac/PrimeWindow.lean#L194-L198) · [Upstream pole-preservation proof](https://github.com/leecrossley/prime-window-rh-criterion/blob/33c85d76b5b7a7989d39e2278ccce1ba8734b7ac/DelayedPole.lean#L113-L174) · [Companion all-scales argument](https://github.com/leecrossley/prime-window-all-widths/blob/5f5be229a1c42d6200fafeab4698480068e9055a/PROOF.md)
