@@ -115,8 +115,10 @@ def verify(source, square_bias=False, square_sources=None):
                                   result.stdout)
                 if not match or {s.strip() for s in match[1].split(",")} != AXIOMS:
                     raise SystemExit(f"Unexpected axiom report for {target}")
+        # A package root also matches its children. Replay them serially to bound memory.
+        replay_env = dict(env, LEAN_NUM_THREADS="1")
         for module in modules:
-            subprocess.run(["leanchecker", "--verbose", module], cwd=work, env=env, check=True)
+            subprocess.run(["leanchecker", "--verbose", module], cwd=work, env=replay_env, check=True)
         print(f"Checked the pinned source, {sum(map(len, reports.values()))} axiom reports "
               f"and all {len(modules)} module replays.")
 
