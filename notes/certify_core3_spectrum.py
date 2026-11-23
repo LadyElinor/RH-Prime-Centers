@@ -1,4 +1,6 @@
 """Enclose finite tent spectra and the all-height line budget. python-flint==0.9.0."""
+import argparse
+
 from flint import acb, arb, ctx
 
 ctx.prec = 144
@@ -26,7 +28,7 @@ def decimal_bound(x, direction):
     return f"{'-' if scaled < 0 else ''}{abs(scaled)//10**6}.{abs(scaled)%10**6:06d}"
 
 
-def main():
+def main(*, lean_inputs=False):
     zeros = acb.zeta_zeros(1, 512)
     require(len(zeros) == 512, "Incomplete zero block")
     last = arb(0)
@@ -75,7 +77,14 @@ def main():
             least = least.min(sample)
         lower = least - curvature*step**2/8
         print(Y, n, decimal_bound(lower, "down"), decimal_bound(least, "up"))
+        if lean_inputs:
+            # Lower nodal bound A and upper curvature bound M, in billionths.
+            a = outer_integer(least * 10**9, "down")
+            m = outer_integer(curvature * 10**9, "up")
+            print(f"Lean inputs: Y={Y} A={a}/1000000000 M={m}/1000000000")
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--lean-inputs", action="store_true", help="print rational grid inputs")
+    main(lean_inputs=parser.parse_args().lean_inputs)
