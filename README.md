@@ -54,7 +54,7 @@ python3 initial/verify.py --check initial/certificate.json
 
 ## One full doubling
 
-[Signed slope changes between fourth powers](notes/quartic-chords.md) proves a uniform interpolation bound for the ordinary-prime tent and gives a reproducible certificate for one complete power window. The recurring bound at the fourth powers remains open in this approach.
+[Signed slope changes between fourth powers](notes/quartic-chords.md) proves a uniform interpolation bound for the ordinary-prime tent and gives a reproducible certificate for one complete power window. [A uniform margin at fourth powers](notes/quartic-anchor-margin.md) proves the bound at every integer anchor using the external RH theorem. It gives an unconditional square-contribution estimate and identifies the gap in a direct prime-only proof.
 
 The [Core 3 roadmap and derivation](notes/core3-window-roadmap.md) applies the truncated explicit formula to a full doubling, bounds the contribution of critical-line zeros, and identifies the remaining signed estimate. The [reproducible diagnostic](notes/check_core3_window.py) compares finite zero sums with direct prime counts and certifies three finite windows.
 
