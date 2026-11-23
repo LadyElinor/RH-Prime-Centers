@@ -42,6 +42,8 @@ Four Primes and RH Prime Centers · November 22, 2026
 
 **Andrew V. Sutherland, the Lean and Mathlib communities, and independent checker contributors.** Sutherland documents his verification work with Claude Code, the individual checks and their authors. The community statement is endorsed by the Lean FRO and the Mathlib Initiative. The verified statements cover ordinary RH and Dirichlet L-functions. The quartet density uses a further Dedekind-GRH hypothesis. [Verification files and credits](https://math.mit.edu/~drew/grh/) · [Joint community statement](https://leanprover-community.github.io/blog/posts/riemann-hypothesis/)
 
+**Mathlib arithmetic modules.** Xavier Roblot authored the Abel summation formalization, Bhavik Mehta the von Mangoldt module, and Alastair Irving, Terry Tao and Ruben Van de Velde the Chebyshev module, including the Costa Pereira bounds used for the higher powers. [Pinned sources and downstream proof](formal/core3/README.md#the-discrete-ordinary-prime-formula)
+
 ## Software and publication
 
 **Arithmetic and formal verification.** Python Software Foundation and Python contributors maintain Python and its decimal logarithm. GCC contributors maintain g++. Torbjörn Granlund and the GMP development team provide the multiprecision arithmetic. The upstream formal proofs use Lean and Mathlib. [Python decimal](https://docs.python.org/3/library/decimal.html#decimal.Decimal.ln) · [GCC](https://gcc.gnu.org/) · [GMP](https://gmplib.org/) · [Lean](https://lean-lang.org/) · [Mathlib](https://leanprover-community.github.io/mathlib4_docs/)
