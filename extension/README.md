@@ -42,3 +42,7 @@ bramble_trace’s earlier dyadic argument and certificate use concavity between 
 - [Lean real-window implication](https://github.com/leecrossley/prime-window-rh-criterion/blob/33c85d76b5b7a7989d39e2278ccce1ba8734b7ac/PrimeWindow.lean#L194-L198)
 - [Companion proof and its earlier finite-range use of concavity](https://github.com/leecrossley/prime-window-all-widths/blob/5f5be229a1c42d6200fafeab4698480068e9055a/PROOF.md)
 - [Python Decimal.ln rounding specification](https://docs.python.org/3/library/decimal.html#decimal.Decimal.ln)
+
+## Loss at doubled-prime checkpoints
+
+The [checkpoint loss note](../notes/checkpoint-loss.md) compares the maximum loss from the starting margin with the sum of all downward steps. Run `python3 extension/run.py --loss --check extension/checkpoint-loss.csv` from the repository root to reproduce the eleven rows, first excesses and minimum block counts.

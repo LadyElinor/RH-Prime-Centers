@@ -210,21 +210,10 @@ struct Window {
     }
 };
 
-int main(int argc,char** argv) try {
-    require(argc==2,"usage: verify anchors.txt");
-    Anchors anchors(argv[1]);
-    auto primes=sieve(xmax);
-    std::vector<Word> logs;
-    logs.reserve(primes.size());
-    for(Pos p:primes) logs.push_back(anchors.lower_log(p));
-    std::vector<Window> runs={{400,800,482,5695770},{256,1024,866,5487440},
-        {20736,248832,44134,4330185},{331776,7962624,638774,3746873},
-        {8503056,xmax,135711766,3890582},{256,xmax,638774,3746873}};
-    std::vector<Pos> edges;
-    for(auto& w:runs) {
-        w.initialize(anchors.log2,primes,logs);
-        edges.push_back(w.left); edges.push_back(w.right);
-    }
+// Visit every affine piece after cutting at the supplied study endpoints.
+template<class Visitor>
+void visit_pieces(std::vector<Pos> edges, Word log2, const std::vector<Pos>& primes,
+                  const std::vector<Word>& logs, Visitor visit) {
     std::sort(edges.begin(),edges.end());
     edges.erase(std::unique(edges.begin(),edges.end()),edges.end());
     edges.push_back(xmax+1);
@@ -239,14 +228,7 @@ int main(int argc,char** argv) try {
             next[j]=i<primes.size()?primes[i]*(1U<<j):xmax+1;
             x=std::min(x,next[j]);
         }
-        auto line=interval_line(prefix,anchors.log2);
-        auto start=value(line,prev),end=value(line,x);
-        const Word root=sqrt_ceiling(x);
-        for(auto& w:runs) {
-            if(x<w.left || x>w.right) continue;
-            if(x==w.left || x==w.right || x==next[1]) w.raw_candidate(x,end);
-            if(prev>=w.left) w.normalized_piece(prev,x,line,start,end,root);
-        }
+        visit(prev,x,next[1]==x,interval_line(prefix,log2));
         for(int j=0;j<3;++j) {
             if(next[j]!=x) continue;
             size_t i=prefix[j].count;
@@ -255,6 +237,39 @@ int main(int argc,char** argv) try {
         if(edges[edge]==x) ++edge;
         prev=x;
     }
+}
+
+#include "checkpoint_loss.hpp"
+
+int main(int argc,char** argv) try {
+    bool loss_only = argc==3 && std::string(argv[2])=="--loss";
+    require(argc==2 || loss_only,"usage: verify anchors.txt [--loss]");
+    Anchors anchors(argv[1]);
+    auto primes=sieve(xmax);
+    std::vector<Word> logs;
+    logs.reserve(primes.size());
+    for(Pos p:primes) logs.push_back(anchors.lower_log(p));
+    if (loss_only) {
+        certify_checkpoint_losses(anchors.log2,primes,logs);
+        return 0;
+    }
+    std::vector<Window> runs={{400,800,482,5695770},{256,1024,866,5487440},
+        {20736,248832,44134,4330185},{331776,7962624,638774,3746873},
+        {8503056,xmax,135711766,3890582},{256,xmax,638774,3746873}};
+    std::vector<Pos> edges;
+    for(auto& w:runs) {
+        w.initialize(anchors.log2,primes,logs);
+        edges.push_back(w.left); edges.push_back(w.right);
+    }
+    visit_pieces(edges,anchors.log2,primes,logs,[&](Pos prev,Pos x,bool center,const Line& line) {
+        auto start=value(line,prev),end=value(line,x);
+        const Word root=sqrt_ceiling(x);
+        for(auto& w:runs) {
+            if(x<w.left || x>w.right) continue;
+            if(x==w.left || x==w.right || center) w.raw_candidate(x,end);
+            if(prev>=w.left) w.normalized_piece(prev,x,line,start,end,root);
+        }
+    });
     std::cout<<"left,right,centers_and_endpoints,affine_pieces,raw_x,raw_lo,raw_hi,norm_x,norm_vlo,norm_vhi,exact_fallbacks\n";
     for(auto& w:runs) {
         require(w.raw_best.hi<w.runner_lower && w.pieces>0, "raw minimizer unresolved");

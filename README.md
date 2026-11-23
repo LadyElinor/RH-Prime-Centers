@@ -52,6 +52,10 @@ python3 initial/verify.py --check initial/certificate.json
 | [Full certificate (CSV)](extension/certificate.csv) | Exact bounds and minimizers for the full interval and five subintervals. |
 | [Initial certificate (JSON)](initial/certificate.json) | Enclosures from two independent calculations on the smaller windows. |
 
+## How much margin do the downward steps use?
+
+Starting at $x=8{,}503{,}056$, the ordinary-prime deficit has a margin of about 766.37. Adding every fall from one checkpoint to the next spends that margin at $x=20{,}779{,}214$. Through $54$ times the starting scale, the largest actual fall below the initial value is only 134.64. Five consecutive blocks suffice if each starts with its own measured margin and pays for every downward step within it. This is a finite certificate. [Data, argument and reproduction](notes/checkpoint-loss.md)
+
 ## One full doubling
 
 [Signed slope changes between fourth powers](notes/quartic-chords.md) proves a uniform interpolation bound for the ordinary-prime tent and gives a reproducible certificate for one complete power window. [A uniform margin at fourth powers](notes/quartic-anchor-margin.md) proves the bound at every integer anchor using the external RH theorem. It gives an unconditional square-contribution estimate and identifies the gap in a direct prime-only proof.

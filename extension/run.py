@@ -25,6 +25,7 @@ def anchor_floor(x):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", type=Path, help="match the recomputed certificate exactly")
+    parser.add_argument("--loss", action="store_true", help="compute the checkpoint loss certificate")
     args = parser.parse_args()
     src = Path(__file__).resolve().parent
     with tempfile.TemporaryDirectory() as temporary:
@@ -36,9 +37,10 @@ def main():
             subprocess.run(["g++", "-std=c++17", "-O3", str(src/(name + ".cpp")),
                             "-lgmpxx", "-lgmp", "-o", str(temp/name)], check=True)
         subprocess.run([temp/"check_interior"], check=True)
-        report = subprocess.check_output([temp/"verify",temp/"anchors"],text=True)
+        options = ["--loss"] if args.loss else []
+        report = subprocess.check_output([temp/"verify",temp/"anchors",*options],text=True)
     rows = list(csv.DictReader(StringIO(report)))
-    if len(rows) != 6:
+    if len(rows) != (11 if args.loss else 6):
         raise ArithmeticError("incomplete certificate")
     if args.check and report != args.check.read_text():
         raise SystemExit("certificate mismatch")
