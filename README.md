@@ -58,7 +58,7 @@ Starting at $x=8{,}503{,}056$, the ordinary-prime deficit has a margin of about 
 
 ## One full doubling
 
-[Signed slope changes between fourth powers](notes/quartic-chords.md) proves a uniform interpolation bound for the ordinary-prime tent and gives a reproducible certificate for one complete power window. [A uniform margin at fourth powers](notes/quartic-anchor-margin.md) proves the bound at every integer anchor using the external RH theorem. It gives an unconditional square-contribution estimate and identifies the gap in a direct prime-only proof.
+[Signed slope changes between fourth powers](notes/quartic-chords.md) proves a uniform interpolation bound for the ordinary-prime tent and gives a reproducible certificate for one complete power window. The [Lean proof](formal/QuarticChord/README.md) derives this interpolation from an explicit short-interval prime-count hypothesis. [A uniform margin at fourth powers](notes/quartic-anchor-margin.md) proves the bound at every integer anchor using the external RH theorem. It gives an unconditional square-contribution estimate and identifies the gap in a direct prime-only proof.
 
 The [Core 3 roadmap and derivation](notes/core3-window-roadmap.md) applies the truncated explicit formula to a full doubling, bounds the contribution of critical-line zeros, and identifies the remaining signed estimate. The [reproducible diagnostic](notes/check_core3_window.py) compares finite zero sums with direct prime counts and certifies three finite windows.
 

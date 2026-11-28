@@ -10,6 +10,8 @@ $$q(v)=2\Re\sum_j c_j\exp(i g_j(s+v)).$$
 
 Here $c_j=H(1/2+ig_j)$ for the positive ordinates below the cutoff. Lean proves the complex-to-real identity, the derivative bound $q''(v)\le\sum_j2|c_j|g_j^2$, and the interpolation estimate on every cell. The theorem applies to any finite coefficient family.
 
+The [quartic-chord modules](QuarticChord/README.md) treat the piecewise-linear ordinary-prime tent directly. They derive uniform interpolation from a stated short-interval prime count and transfer fourth-power anchor margins to real windows.
+
 ## What was checked
 
 * **Lean** proves that a lower bound $A$ at all 257 nodes and an upper bound $M$ for the curvature sum suffice for a claimed floor $L$ throughout $0\le v\le\log 2$, if $L\le A-M(0.6931471808/256)^2/8$. Mathlib proves the upper bound on $\log 2$. The second declaration checks this rational arithmetic for each of the three rows below.

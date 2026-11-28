@@ -11,7 +11,8 @@ def main (args : List String) : IO Unit := do
         `PrimeWindowTransfer.core3_uniform_vanishing, `PrimeWindowTransfer.finite_formula_vanishing])
     | ["core3", path] => pure (path, [`PrimeWindowCore3.conductor_one, `PrimeWindowCore3.zeros_finite, `PrimeWindowCore3.lowMass_nonneg,
         `PrimeWindowCore3.smoothed_bound, `PrimeWindowCore3.smoothed_vanishing])
-    | _ => throw (IO.userError "Usage: Replay.lean [tent|core3] MODULE.olean")
+    | ["named", target, path] => pure (path, [target.toName])
+    | _ => throw (IO.userError "Usage: Replay.lean [tent|core3|named THEOREM] MODULE.olean")
   initSearchPath (← findSysroot)
   let (data, _) ← readModuleData path
   for target in targets do
